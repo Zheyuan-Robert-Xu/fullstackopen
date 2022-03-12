@@ -24,3 +24,10 @@ referenceToGreet() // prints "hello, my name is undefined"
 **Solution**
 
 *setTimeout(arto.greet, 1000)* or *setTimeout(arto.greet.bind(arto), 1000)*
+
+## c.a more complex state, debugging React applications
+
+Rule of Web Development
+<pre>
+Keep the browser's developer console open at all times.
+</pre>
