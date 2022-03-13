@@ -16,6 +16,10 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
+  const total = good + neutral + bad;
+  const average = (good - bad) / total;
+  const positive = (good / total) * 100;
+
   const addValue = (newValue, text) => {
     switch (text) {
       case "good":
@@ -42,9 +46,12 @@ const App = () => {
       />
       <Button handleClick={() => addValue(bad + 1, "bad")} text="bad" />
       <Header text={"statistics"} />
-      <Display value={"good " + good} />
-      <Display value={"neutral " + neutral} />
-      <Display value={"bad " + bad} />
+      <Display value={good !== 0 ? "good " + good : null} />
+      <Display value={neutral !== 0 ? "neutral " + neutral : null} />
+      <Display value={bad !== 0 ? "bad " + bad : null} />
+      <Display value={total !== 0 ? "all " + total : null} />
+      <Display value={total !== 0 ? "average " + average : null} />
+      <Display value={total !== 0 ? "positive " + positive + "%" : null} />
     </div>
   );
 };
