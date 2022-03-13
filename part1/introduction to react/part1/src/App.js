@@ -46,67 +46,123 @@
 // export default App;
 
 ///part d: Complext state
-import React from "react";
-import { useState } from "react";
+// import React from "react";
+// import { useState } from "react";
 
-const History = (props) => {
-  /// conditional rendering
-  if (props.allClicks.length === 0) {
-    return <div>the app is used by pressing the buttons</div>;
-  }
-  return <div>button press history: {props.allClicks.join(" ")}</div>;
-};
+// const History = (props) => {
+//   /// conditional rendering
+//   if (props.allClicks.length === 0) {
+//     return <div>the app is used by pressing the buttons</div>;
+//   }
+//   return <div>button press history: {props.allClicks.join(" ")}</div>;
+// };
 
-const Button = ({ handleClick, text }) => (
-  <button onClick={handleClick}>{text}</button>
+// const Button = ({ handleClick, text }) => (
+//   <button onClick={handleClick}>{text}</button>
+// );
+
+// const App = () => {
+//   const [left, setLeft] = useState(0);
+//   const [right, setRight] = useState(0);
+//   const [allClicks, setAll] = useState([]);
+
+//   // const handleLeftClick = () => {
+//   //   setClicks({
+//   //     ...clicks, /// creates a new object that has copies of all of the properties of the clicks object
+//   //     left: clicks.left + 1,
+//   //   });
+//   // };
+
+//   // const [allClicks, setAll] = useState([])
+
+//   // const handleRightClick = () => {
+//   //   setClicks({
+//   //     ...clicks,
+//   //     right: clicks.right + 1,
+//   //     /// react forbides mutate state directly, since it can result in unexpected side effects. Changing state has to always be done by setting the state to a new object.
+//   // // clicks.left++
+//   // // setClicks(clicks)
+//   //   });
+//   // };
+
+//   const handleLeftClick = () => {
+//     setAll(allClicks.concat("L")); // does not mutate the existing array but rather returns a new copy of the array with the item added to it
+
+//     /// the following is not good as the state of React components like allClicks must not be mutated directly
+//     // allClicks.push('L')
+//     // setAll(allClicks)
+//     // setLeft(left + 1)
+//     setLeft(left + 1);
+//   };
+
+//   const handleRightClick = () => {
+//     setAll(allClicks.concat("R"));
+//     setRight(right + 1);
+//   };
+
+//   return (
+//     <div>
+//       {left}
+//       <Button handleClick={handleLeftClick} text="left" />
+//       <Button handleClick={handleRightClick} text="right" />
+//       {right}
+//       <History allClicks={allClicks} />
+//     </div>
+//   );
+// };
+// export default App;
+
+/// part D. event Handling Revisited
+// import React from "react";
+// import { useState } from "react";
+
+// const App = () => {
+//   const [value, setValue] = useState(10);
+//   // When the component gets rendered, no function gets called and only the
+//   //reference to the arrow function is set to the event handler. Calling the
+//   //function happens only once the button is clicked.
+
+//   const handleClick = () => {
+//     console.log("clicked the button");
+//     setValue(0);
+//   };
+
+//   return (
+//     <div>
+//       {value}
+//       {/* Naturally, our event handler function can be composed of multiple commands. In these cases we use the longer curly brace syntax for arrow functions: */}
+//       <button onClick={handleClick}>button</button>
+//     </div>
+//   );
+// };
+// export default App;
+
+//part D. Function that returns a function
+import React, { useState } from "react";
+// import ReactDom from "react-dom";
+
+/// Do Not Define Components Within Components
+/// Display and button should be put outside of APP
+const Display = (props) => <div>{props.value}</div>;
+
+const Button = (props) => (
+  <button onClick={props.handleClick}>{props.text}</button>
 );
 
 const App = () => {
-  const [left, setLeft] = useState(0);
-  const [right, setRight] = useState(0);
-  const [allClicks, setAll] = useState([]);
+  const [value, setValue] = useState(10);
 
-  // const handleLeftClick = () => {
-  //   setClicks({
-  //     ...clicks, /// creates a new object that has copies of all of the properties of the clicks object
-  //     left: clicks.left + 1,
-  //   });
-  // };
-
-  // const [allClicks, setAll] = useState([])
-
-  // const handleRightClick = () => {
-  //   setClicks({
-  //     ...clicks,
-  //     right: clicks.right + 1,
-  //     /// react forbides mutate state directly, since it can result in unexpected side effects. Changing state has to always be done by setting the state to a new object.
-  // // clicks.left++
-  // // setClicks(clicks)
-  //   });
-  // };
-
-  const handleLeftClick = () => {
-    setAll(allClicks.concat("L")); // does not mutate the existing array but rather returns a new copy of the array with the item added to it
-
-    /// the following is not good as the state of React components like allClicks must not be mutated directly
-    // allClicks.push('L')
-    // setAll(allClicks)
-    // setLeft(left + 1)
-    setLeft(left + 1);
-  };
-
-  const handleRightClick = () => {
-    setAll(allClicks.concat("R"));
-    setRight(right + 1);
+  const setToValue = (newValue) => {
+    console.log("value now", newValue);
+    setValue(newValue);
   };
 
   return (
     <div>
-      {left}
-      <Button handleClick={handleLeftClick} text="left" />
-      <Button handleClick={handleRightClick} text="right" />
-      {right}
-      <History allClicks={allClicks} />
+      <Display value={value} />
+      <Button handleClick={() => setToValue(1000)} text="thousand" />
+      <Button handleClick={() => setToValue(0)} text="reset" />
+      <Button handleClick={() => setToValue(value + 1)} text="increment" />
     </div>
   );
 };
