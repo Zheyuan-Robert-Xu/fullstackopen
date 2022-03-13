@@ -17,16 +17,60 @@ const Statistics = ({ good, neutral, bad }) => {
     return <p>No feedback given</p>;
   } else {
     const average = (good - bad) / total;
-    const positive = (good / total) * 100;
+    const positive = ((good / total) * 100).toFixed(1);
     return (
-      <div>
-        <Display value={good !== 0 ? "good " + good : null} />
-        <Display value={neutral !== 0 ? "neutral " + neutral : null} />
-        <Display value={bad !== 0 ? "bad " + bad : null} />
-        <Display value={total !== 0 ? "all " + total : null} />
-        <Display value={total !== 0 ? "average " + average : null} />
-        <Display value={total !== 0 ? "positive " + positive + "%" : null} />
-      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <Display value={"good "} />
+            </td>
+            <td>
+              <Display value={good} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Display value={"neutral "} />
+            </td>
+            <td>
+              <Display value={neutral} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Display value={"bad "} />
+            </td>
+            <td>
+              <Display value={bad} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Display value={"all "} />
+            </td>
+            <td>
+              <Display value={total} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Display value={"average "} />
+            </td>
+            <td>
+              <Display value={average} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Display value={"positive "} />
+            </td>
+            <td>
+              <Display value={positive + "%"} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
     );
   }
 };
