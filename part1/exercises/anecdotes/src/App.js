@@ -19,14 +19,23 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [voted, setVoted] = useState(new Uint8Array(anecdotes.length)); /// tricky is to use new Uint8Array(anecdotes.length)in useState
 
   const selectAnecdote = () => {
     setSelected(Math.floor(Math.random() * anecdotes.length));
   };
 
+  const voteAddValue = () => {
+    const copyAryList = [...voted];
+    copyAryList[selected] += 1;
+    setVoted(copyAryList);
+  };
+
   return (
     <div>
       <Display value={anecdotes[selected]} />
+      <Display value={"has " + voted[selected] + " votes"} />
+      <Button handleClick={() => voteAddValue()} text="vote" />
       <Button handleClick={() => selectAnecdote()} text="next anecode" />
     </div>
   );
