@@ -6,6 +6,7 @@ const Button = (props) => (
 );
 
 const Display = (props) => <div>{props.value}</div>;
+const Header = (props) => <h1>{props.title}</h1>;
 
 const App = () => {
   const anecdotes = [
@@ -18,25 +19,37 @@ const App = () => {
     "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients",
   ];
 
+  const [mostVoted, findMostVoted] = useState(0);
   const [selected, setSelected] = useState(0);
   const [voted, setVoted] = useState(new Uint8Array(anecdotes.length)); /// tricky is to use new Uint8Array(anecdotes.length)in useState
 
   const selectAnecdote = () => {
-    setSelected(Math.floor(Math.random() * anecdotes.length));
+    /// make sure always change the index
+    var newIndex = Math.floor(Math.random() * anecdotes.length);
+    while (selected === newIndex) {
+      newIndex = Math.floor(Math.random() * anecdotes.length);
+    }
+    setSelected(newIndex);
+    // findMostVoted(voted.indexOf(Math.max(...voted)));
   };
 
   const voteAddValue = () => {
     const copyAryList = [...voted];
     copyAryList[selected] += 1;
+    findMostVoted(copyAryList.indexOf(Math.max(...copyAryList))); /// must use copyAryList
     setVoted(copyAryList);
   };
 
   return (
     <div>
+      <Header title={"Anecdote of the day"} />
       <Display value={anecdotes[selected]} />
       <Display value={"has " + voted[selected] + " votes"} />
       <Button handleClick={() => voteAddValue()} text="vote" />
       <Button handleClick={() => selectAnecdote()} text="next anecode" />
+      <Header title={"Anecdote with most votes"} />
+      <Display value={anecdotes[mostVoted]} />
+      <Display value={"has " + voted[mostVoted] + " votes"} />
     </div>
   );
 };
