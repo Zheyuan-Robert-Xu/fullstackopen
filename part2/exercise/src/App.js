@@ -1,25 +1,5 @@
 import React from "react";
-
-const Header = ({ course }) => <h2>{course}</h2>;
-
-const Total = ({ sum }) => (
-  <p>
-    <strong>total of {sum} exercises</strong>
-  </p>
-);
-
-const Part = ({ part }) => (
-  <p>
-    {part.name} {part.exercises}
-  </p>
-);
-const Course = ({ course, total }) => (
-  <div>
-    <Header course={course.name} />
-    <Content parts={course.parts} />
-    <Total sum={total} />
-  </div>
-);
+import Course from "./components/Course";
 
 const CourseList = ({ course }) => {
   /// return is necessary
@@ -45,61 +25,7 @@ const CourseList = ({ course }) => {
   );
 };
 
-const Content = ({ parts }) => (
-  <div>
-    {parts.map((part, i) => {
-      return <Part key={i} part={part} />;
-    })}
-  </div>
-);
-
-const App = () => {
-  const course = [
-    {
-      id: 1,
-      name: "Half Stack application development",
-      parts: [
-        {
-          name: "Fundamentals of React",
-          exercises: 10,
-          id: 1,
-        },
-        {
-          name: "Using props to pass data",
-          exercises: 7,
-          id: 2,
-        },
-        {
-          name: "State of a component",
-          exercises: 14,
-          id: 3,
-        },
-        {
-          name: "Redux",
-          exercises: 11,
-          id: 4,
-        },
-      ],
-    },
-
-    {
-      name: "Node.js",
-      id: 2,
-      parts: [
-        {
-          name: "Routing",
-          exercises: 3,
-          id: 1,
-        },
-        {
-          name: "Middlewares",
-          exercises: 7,
-          id: 2,
-        },
-      ],
-    },
-  ];
-
+const App = ({ course }) => {
   return (
     <div>
       <h1>Web Development Curriculum</h1>
