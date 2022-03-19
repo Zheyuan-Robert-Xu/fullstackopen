@@ -13,18 +13,11 @@ const Part = ({ part }) => (
     {part.name} {part.exercises}
   </p>
 );
-const Course = ({ course }) => (
+const Course = ({ course, total }) => (
   <div>
     <Header course={course.name} />
     <Content parts={course.parts} />
-    <Total
-      sum={
-        course.parts[0].exercises +
-        course.parts[1].exercises +
-        course.parts[2].exercises +
-        course.parts[3].exercises
-      }
-    />
+    <Total sum={total} />
   </div>
 );
 
@@ -65,7 +58,15 @@ const App = () => {
     ],
   };
 
-  return <Course course={course} />;
+  const initialValue = 0;
+
+  const total = course.parts.reduce(
+    (previousValue, currentObject) => previousValue + currentObject.exercises,
+    initialValue
+  ); // initial Value is 0,
+  console.log(total);
+
+  return <Course course={course} total={total} />;
 };
 
 export default App;
