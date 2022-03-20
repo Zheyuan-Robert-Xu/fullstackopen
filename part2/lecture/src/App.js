@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import Note from "./components/Note";
 
 const App = ({ notes }) => {
