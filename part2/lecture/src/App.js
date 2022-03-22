@@ -17,7 +17,7 @@ const App = (props) => {
 
     setNotes(notes.concat(noteObject)); // does not mutate the original notes array, but rather creates a new copy of the array with the new item added to the end
     // This is important since we must never mutate state directly in React
-    setNewNote("");
+    setNewNote(""); // The event handler also resets the value of the controlled input element by calling the setNewNote function of the newNote state:
   };
 
   const handleNoteChange = (event) => {
