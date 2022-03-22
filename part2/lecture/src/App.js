@@ -46,7 +46,7 @@ const App = (props) => {
       <form onSubmit={addNote}>
         {/* registered an event handler to the onChange attribute */}
         <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>{" "}
+        <button type="submit">save</button>
       </form>
     </div>
   );
