@@ -6,6 +6,7 @@ const App = (props) => {
   const [persons, setPersons] = useState(props.persons);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [newFilter, setNewFilter] = useState("");
 
   const addPerson = (event) => {
     // event.preventDefault(); //prevents the default action of submitting a form /// did not need to call the event.preventDefault() method like we did in the onSubmit event handler. This is because there is no default action that occurs on an input change
@@ -52,9 +53,19 @@ const App = (props) => {
     setNewNumber(event.target.value);
   };
 
+  const handleFilterChange = (event) => {
+    console.log(event.target.value);
+    setNewFilter(event.target.value);
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with
+        <input value={newFilter} onChange={handleFilterChange} />
+      </div>
+      <h2>Add a new</h2>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handlePersonChange} />
@@ -67,9 +78,13 @@ const App = (props) => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((person) => (
-        <Person key={person.name} person={person} />
-      ))}
+      {persons.map((person) =>
+        newFilter === "" ? (
+          <Person key={person.name} person={person} />
+        ) : person.name.toLowerCase().includes(newFilter.toLowerCase()) ? (
+          <Person key={person.name} person={person} />
+        ) : null
+      )}
     </div>
   );
 };
