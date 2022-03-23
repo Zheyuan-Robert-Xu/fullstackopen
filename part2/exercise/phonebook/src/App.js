@@ -16,8 +16,16 @@ const App = (props) => {
       id: persons.length + 1,
     };
 
-    setPersons(persons.concat(newPerson)); // does not mutate the original notes array, but rather creates a new copy of the array with the new item added to the end
-    // This is important since we must never mutate state directly in React
+    persons.forEach((element) => {
+      if (element.name === newName) {
+        window.alert(`${newName} is already added to phonebook`);
+      }
+    });
+
+    if (persons.every((element) => element.name !== newName)) {
+      setPersons(persons.concat(newPerson)); // does not mutate the original notes array, but rather creates a new copy of the array with the new item added to the end
+      // This is important since we must never mutate state directly in React
+    }
     setNewName(""); // The event handler also resets the value of the controlled input element by calling the setNewNote function of the newNote state:
   };
 
