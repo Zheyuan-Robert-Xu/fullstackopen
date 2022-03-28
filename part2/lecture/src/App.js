@@ -8,7 +8,10 @@ const App = () => {
   const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(true);
 
+  // There are two parameters. The first is a function, the effect itself.
+  // second parameter of useEffect is used to specify how often the effect is run. If the second parameter is an empty array [], then the effect is only run along with the first render of the component.
   useEffect(() => {
+    //The data returned by the server is plain text, basically just one long string. The axios library is still able to parse the data into a JavaScript array
     axios.get("http://localhost:3001/notes").then((response) => {
       setNotes(response.data);
     });

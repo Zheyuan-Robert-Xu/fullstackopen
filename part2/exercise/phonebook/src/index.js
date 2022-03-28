@@ -2,21 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 
-const persons = [
-  {
-    id: 1,
-    name: "Arto Hellas",
-    number: "0408928321",
-    date: "2019-05-30T17:30:31.098Z",
-    important: true,
-  },
-  {
-    id: 2,
-    name: "Ada Lovelace",
-    number: "0406820371",
-    date: "2019-05-30T18:39:34.091Z",
-    important: false,
-  },
-];
+import axios from "axios";
 
-ReactDOM.render(<App persons={persons} />, document.getElementById("root"));
+// axios.get("http://localhost:3001/persons").then((response) => {
+//   const persons = response.data;
+//   ReactDOM.render(<App persons={persons} />, document.getElementById("root"));
+// });
+ReactDOM.render(<App />, document.getElementById("root")); // index.js can be simplified to
