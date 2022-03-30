@@ -3,10 +3,10 @@ import CountriesSimple from "./CountriesSimple";
 import Languages from "./Languages";
 
 const Countries = ({ countries, newFilter }) => {
-  var number = countries.filter((country) =>
+  let number = countries.filter((country) =>
     country.name.common.toLowerCase().includes(newFilter.toLowerCase())
   ).length;
-  var list = countries.filter((country) =>
+  let list = countries.filter((country) =>
     country.name.common.toLowerCase().includes(newFilter.toLowerCase())
   );
   console.log(number);
