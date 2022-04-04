@@ -1,10 +1,10 @@
 import React from "react";
 import CountriesSimple from "./CountriesSimple";
-import Languages from "./Languages";
+import SingleCountry from "./SingleCountry";
 
 const Countries = ({ countries, newFilter }) => {
   let number = countries.filter((country) =>
-    country.name.common.toLowerCase().includes(newFilter.toLowerCase())
+    country.name.common.tpartoLowerCase().includes(newFilter.toLowerCase())
   ).length;
   let list = countries.filter((country) =>
     country.name.common.toLowerCase().includes(newFilter.toLowerCase())
@@ -19,17 +19,7 @@ const Countries = ({ countries, newFilter }) => {
 
     case 1:
       console.log(list[0].languages);
-      return (
-        <div>
-          <h2>{list[0].name.common}</h2>
-          <div>capitial {list[0].capital}</div>
-          <div>area {list[0].area}</div>
-          <h3>Languages:</h3>
-          <Languages languagesObj={list[0].languages} />
-
-          <img src={list[0].flags.png} alt="Flag" height="200"></img>
-        </div>
-      );
+      return <SingleCountry country={list[0]} />;
     default:
       break;
   }
