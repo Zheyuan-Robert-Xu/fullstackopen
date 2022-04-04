@@ -4,12 +4,12 @@ import axios from "axios";
 import Languages from "./Languages";
 
 const SingleCountry = ({ country }) => {
-  const [weather, setWeather] = useState([]);
+  const [weather, setWeather] = useState(null);
   const [show, setShow] = useState(null);
 
   const api_key = process.env.REACT_APP_API_KEY;
 
-  const capital = country.capital[0];
+  const capital = country.capital;
 
   useEffect(() => {
     axios
@@ -27,11 +27,9 @@ const SingleCountry = ({ country }) => {
   console.log("second");
   console.log(weather);
 
-  //   const temp = weather ? (weather.main.temp - 273.15).toFixed(1) : null;
-  //   const windSpeed = weather ? weather.wind.speed : null;
+  const temp = weather ? (weather.main.temp - 273.15).toFixed(1) : null;
+  const windSpeed = weather ? weather.wind.speed : null;
 
-  //   if (weather.length > 0) {
-  //   const currentWeather = weather[0].current;
   console.log("get first weather");
   return show === country.name.common ? (
     <div key={country.name.common}>
@@ -45,6 +43,19 @@ const SingleCountry = ({ country }) => {
         <Languages languagesObj={country.languages} />
 
         <img src={country.flags.png} alt="Flag" height="200"></img>
+        <h2>Weather in {country.capital}</h2>
+        <p>temperature {temp} Celcius</p>
+        <img
+          src={
+            "http://openweathermap.org/img/wn/" +
+            weather.weather[0].icon +
+            "@2x.png"
+          }
+          alt="Wheather Icon"
+          height="100"
+        ></img>
+
+        <p>wind {windSpeed} m/s</p>
       </div>
     </div>
   ) : (
@@ -53,20 +64,6 @@ const SingleCountry = ({ country }) => {
       <button onClick={() => setShow(country.name.common)}>show</button>
     </div>
   );
-  //   }
-
-  // return (
-  //   <div>
-  //     <h1>{country.name}</h1>
-  //     <p>capital: {country.capital}</p>
-  //     <p>population: {country.population}</p>
-  //     <h2>Spoken languages</h2>
-  //     <ul>
-  //       {country.languages.map(language => <li key={language.name}>{language.name}</li>)}
-  //     </ul>
-  //     <img src={country.flag} alt="Country flag"></img>
-  //   </div>
-  // )
 };
 
 export default SingleCountry;
