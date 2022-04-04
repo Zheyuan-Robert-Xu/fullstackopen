@@ -4,7 +4,7 @@ import SingleCountry from "./SingleCountry";
 
 const Countries = ({ countries, newFilter }) => {
   let number = countries.filter((country) =>
-    country.name.common.tpartoLowerCase().includes(newFilter.toLowerCase())
+    country.name.common.toLowerCase().includes(newFilter.toLowerCase())
   ).length;
   let list = countries.filter((country) =>
     country.name.common.toLowerCase().includes(newFilter.toLowerCase())
