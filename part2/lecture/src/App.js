@@ -36,6 +36,18 @@ const App = () => {
     setNewNote(event.target.value);
   };
 
+  const toggleImportanceOf = (id) => {
+    const url = `http://localhost:3001/notes/${id}`;
+    const note = notes.find((n) => n.id === id);
+    const changedNote = { ...note, important: !note.important }; /// so-called shallow copy
+
+    axios.put(url, changedNote).then((response) => {
+      //if note.id !== id is true; we simply copy the item from the old array into the new array.
+      //If the condition is false, then the note object returned by the server is added to the array instead
+      setNotes(notes.map((note) => (note.id !== id ? note : response.data)));
+    });
+  };
+
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
 
   return (
@@ -48,7 +60,11 @@ const App = () => {
       </div>
       <ul>
         {notesToShow.map((note) => (
-          <Note key={note.id} note={note} />
+          <Note
+            key={note.id}
+            note={note}
+            toggleImportance={() => toggleImportanceOf(note.id)}
+          />
         ))}
       </ul>
       <form onSubmit={addNote}>
