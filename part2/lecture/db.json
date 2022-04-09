@@ -10,7 +10,7 @@
       "id": 2,
       "content": "Browser can execute only JavaScript",
       "date": "2022-1-17T18:39:34.091Z",
-      "important": false
+      "important": true
     },
     {
       "id": 3,
@@ -21,7 +21,7 @@
     {
       "content": "Greate Robert",
       "date": "2022-04-09T03:41:46.902Z",
-      "important": false,
+      "important": true,
       "id": 4
     },
     {
@@ -29,6 +29,12 @@
       "date": "2022-04-09T03:43:42.793Z",
       "important": false,
       "id": 5
+    },
+    {
+      "content": "Happy Sunday",
+      "date": "2022-04-09T05:24:50.768Z",
+      "important": false,
+      "id": 6
     }
   ]
 }

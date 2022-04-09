@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Note from "./components/Note";
 import React from "react";
+import noteService from "./services/notes";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -12,8 +13,8 @@ const App = () => {
   // second parameter of useEffect is used to specify how often the effect is run. If the second parameter is an empty array [], then the effect is only run along with the first render of the component.
   useEffect(() => {
     //The data returned by the server is plain text, basically just one long string. The axios library is still able to parse the data into a JavaScript array
-    axios.get("http://localhost:3001/notes").then((response) => {
-      setNotes(response.data);
+    noteService.getAll().then((initialNotes) => {
+      setNotes(initialNotes);
     });
   }, []);
 
@@ -26,8 +27,9 @@ const App = () => {
       id: notes.length + 1,
     };
 
-    axios.post("http://localhost:3001/notes", noteObject).then((response) => {
-      setNotes(notes.concat(response.data)), setNewNote("");
+    noteService.create(noteObject).then((returnedNote) => {
+      setNotes(notes.concat(returnedNote));
+      setNewNote("");
     });
   };
 
@@ -37,14 +39,13 @@ const App = () => {
   };
 
   const toggleImportanceOf = (id) => {
-    const url = `http://localhost:3001/notes/${id}`;
     const note = notes.find((n) => n.id === id);
     const changedNote = { ...note, important: !note.important }; /// so-called shallow copy
 
-    axios.put(url, changedNote).then((response) => {
-      //if note.id !== id is true; we simply copy the item from the old array into the new array.
-      //If the condition is false, then the note object returned by the server is added to the array instead
-      setNotes(notes.map((note) => (note.id !== id ? note : response.data)));
+    //if note.id !== id is true; we simply copy the item from the old array into the new array.
+    //If the condition is false, then the note object returned by the server is added to the array instead
+    noteService.update(id, changedNote).then((returnedNote) => {
+      setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
     });
   };
 
