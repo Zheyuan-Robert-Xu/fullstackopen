@@ -44,9 +44,15 @@ const App = () => {
 
     //if note.id !== id is true; we simply copy the item from the old array into the new array.
     //If the condition is false, then the note object returned by the server is added to the array instead
-    noteService.update(id, changedNote).then((returnedNote) => {
-      setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
-    });
+    noteService
+      .update(id, changedNote)
+      .then((returnedNote) => {
+        setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
+      })
+      .catch((error) => {
+        alert(`the note '${note.content}' was already deleted from server`);
+        setNotes(notes.filter((n) => n.id !== id));
+      });
   };
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);

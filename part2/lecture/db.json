@@ -33,7 +33,7 @@
     {
       "content": "Happy Sunday",
       "date": "2022-04-09T05:24:50.768Z",
-      "important": false,
+      "important": true,
       "id": 6
     }
   ]
