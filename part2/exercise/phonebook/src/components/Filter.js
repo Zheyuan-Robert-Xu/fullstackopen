@@ -2,10 +2,10 @@ import React from "react";
 
 const Filter = ({ value, onChange }) => {
   return (
-    <div>
+    <p>
       filter shown with
       <input value={value} onChange={onChange} />
-    </div>
+    </p>
   );
 };
 

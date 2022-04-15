@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const baseUrl = "http://localhost:3001/persons";
 
 const getAll = () => {
@@ -6,23 +7,12 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
-// const getAll = () => {
-//   const request = axios.get(baseUrl);
-//   const nonExisting = {
-//     id: 10000,
-//     content: "This note is not saved to server",
-//     date: "2019-05-30T17:30:31.098Z",
-//     important: true,
-//   };
-//   return request.then((response) => response.data.concat(nonExisting));
-// };
-
 const create = (newObject) => {
   const request = axios.post(baseUrl, newObject);
   return request.then((response) => response.data);
 };
 
-const deleteNote = (id) => {
+const deletePerson = (id) => {
   const request = axios.delete(`${baseUrl}/${id}`);
   return request.then((response) => response.data);
 };
@@ -30,5 +20,5 @@ const deleteNote = (id) => {
 export default {
   getAll,
   create,
-  deleteNote,
+  deletePerson,
 };

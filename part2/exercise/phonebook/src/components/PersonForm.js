@@ -1,19 +1,24 @@
 import React from "react";
 
 const PersonForm = ({
-  addPerson,
-  newName,
-  handlePersonChange,
-  newNumber,
-  handleNumberChange,
+  data: { onFormSubmit, newName, setNewName, newNumber, setNewNumber }, // methods to link useState methods
 }) => {
   return (
-    <form onSubmit={addPerson}>
+    <form onSubmit={onFormSubmit}>
       <div>
-        name: <input value={newName} onChange={handlePersonChange} />
+        name:
+        <input
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          autoFocus
+        />
       </div>
       <div>
-        number: <input value={newNumber} onChange={handleNumberChange} />
+        number:
+        <input
+          value={newNumber}
+          onChange={(e) => setNewNumber(e.target.value)}
+        />
       </div>
       <div>
         <button type="submit">add</button>

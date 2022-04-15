@@ -1,103 +1,77 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-import noteService from "./services/notes";
-
-import axios from "axios";
+import PhoneService from "./services/phonebook";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  const [newFilter, setNewFilter] = useState("");
+  const [searchPerson, setNewSearch] = useState("");
+  const [personsFilter, setPersonsFilter] = useState(persons);
 
   useEffect(() => {
-    // axios.get("http://localhost:3001/persons").then((response) => {
-    //   setPersons(response.data);
-    // });
-    noteService.getAll().then((initialNotes) => {
-      setPersons(initialNotes);
+    PhoneService.getAll().then((returnedPersons) => {
+      setPersons(returnedPersons);
+      setPersonsFilter(returnedPersons);
     });
   }, []);
 
-  const addPerson = (event) => {
-    // event.preventDefault(); //prevents the default action of submitting a form /// did not need to call the event.preventDefault() method like we did in the onSubmit event handler. This is because there is no default action that occurs on an input change
-    event.preventDefault();
-    if (newName === "" || newNumber === "") {
-      window.alert("Name or Number cannot be empty");
+  const filterPersons = (e) => {
+    const searchPerson = e.target.value;
+    setNewSearch(searchPerson);
+    const newPersons = persons.filter(
+      (person) =>
+        person.name.toLowerCase().search(searchPerson.toLowerCase()) !== -1 // not match
+    );
+    setPersonsFilter(newPersons);
+  };
+
+  const onFormSubmit = (e) => {
+    e.preventDefault();
+    setNewName("");
+    setNewNumber("");
+    const alreadyExists = persons.some((person) => person.name === newName);
+    if (alreadyExists) {
+      alert(`${newName} is already added to phonebook`);
+      return;
     }
-    const newPerson = {
-      name: newName,
-      number: newNumber,
-      date: new Date().toISOString(),
-      important: Math.random() < 0.5,
-      id: persons.length + 1,
-    };
-
-    // axios.post("http://localhost:3001/persons", newPerson).then((response) => {
-    //   setPersons(persons.concat(response.data));
-    //   setNewName("");
-    //   setNewNumber("");
-    // });
-
-    noteService.create(newPerson).then((returnedNote) => {
-      setPersons(persons.concat(returnedNote));
-      setNewName("");
-      setNewNumber("");
-    });
-
-    persons.forEach((element) => {
-      if (element.name === newName) {
-        window.alert(`${newName} is already added to phonebook`);
+    PhoneService.create({ name: newName, number: newNumber }).then(
+      (returnedPerson) => {
+        const newPersons = persons.concat(returnedPerson);
+        setPersons(newPersons);
+        setPersonsFilter(newPersons);
       }
-    });
+    );
+  };
 
-    if (
-      persons.every(
-        (element) =>
-          element.name !== newName && newName !== "" && newNumber !== ""
-      )
-    ) {
-      setPersons(persons.concat(newPerson)); // does not mutate the original notes array, but rather creates a new copy of the array with the new item added to the end
-      // This is important since we must never mutate state directly in React
-      setNewName(""); // The event handler also resets the value of the controlled input element by calling the setNewNote function of the newNote state:
-      setNewNumber("");
+  const deletePerson = ({ id, name }) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      PhoneService.deletePerson(id).then((response) => {
+        const newPersons = persons.filter((person) => person.id !== id);
+        setPersons(newPersons);
+        setPersonsFilter(newPersons);
+      });
     }
   };
 
-  const handlePersonChange = (event) => {
-    // The event handler function receives the event object as its event parameter
-    console.log(event.target.value);
-    // The target property of the event object now corresponds to the controlled input element
-    setNewName(event.target.value);
-  };
-
-  const handleNumberChange = (event) => {
-    console.log(event.target.value);
-    setNewNumber(event.target.value);
-  };
-
-  const handleFilterChange = (event) => {
-    console.log(event.target.value);
-    setNewFilter(event.target.value);
+  const formData = {
+    onFormSubmit,
+    newName,
+    setNewName,
+    newNumber,
+    setNewNumber,
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter value={newFilter} onChange={handleFilterChange} />
-      <h2>Add a new</h2>
-      <PersonForm
-        addPerson={addPerson}
-        newName={newName}
-        handlePersonChange={handlePersonChange}
-        newNumber={newNumber}
-        handleNumberChange={handleNumberChange}
-      />
-      <h2>Numbers</h2>
-      <Persons persons={persons} newFilter={newFilter} />
+      <Filter value={searchPerson} onChange={filterPersons} />
+      <h3>Add a new</h3>
+      <PersonForm data={formData} />
+      <h3>Numbers</h3>
+      <Persons personsFilter={personsFilter} deletePerson={deletePerson} />
     </div>
   );
 };
