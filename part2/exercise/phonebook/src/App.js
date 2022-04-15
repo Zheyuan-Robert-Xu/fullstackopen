@@ -53,9 +53,10 @@ const App = () => {
             );
             setPersons(newPersons);
             setPersonsFilter(newPersons);
-            setModifyMessage(
-              `Modified '${returnedPerson.name}''s number to '${returnedPerson.number}'`
-            );
+            setModifyMessage({
+              text: `Modified '${returnedPerson.name}''s number to '${returnedPerson.number}'`,
+              type: "success",
+            });
             setTimeout(() => {
               setModifyMessage(null);
             }, 5000);
@@ -69,7 +70,11 @@ const App = () => {
         const newPersons = persons.concat(returnedPerson);
         setPersons(newPersons);
         setPersonsFilter(newPersons);
-        setModifyMessage(`Added '${returnedPerson.name}'`);
+        setModifyMessage({
+          text: `Added '${returnedPerson.name}'`,
+          type: "success",
+        });
+
         setTimeout(() => {
           setModifyMessage(null);
         }, 5000);
@@ -78,12 +83,27 @@ const App = () => {
   };
 
   const deletePerson = ({ id, name }) => {
+    const existingPerson = persons.find((person) => person.id === id);
     if (window.confirm(`Delete ${name}?`)) {
-      PhoneService.deletePerson(id).then((response) => {
-        const newPersons = persons.filter((person) => person.id !== id);
-        setPersons(newPersons);
-        setPersonsFilter(newPersons);
-      });
+      PhoneService.deletePerson(id)
+        .then((response) => {
+          const newPersons = persons.filter((person) => person.id !== id);
+          setPersons(newPersons);
+          setPersonsFilter(newPersons);
+        })
+        .catch((error) => {
+          setModifyMessage({
+            text: `Information of '${existingPerson.name}' has already been removed from server`,
+            type: "error",
+          });
+          setTimeout(() => {
+            setModifyMessage(null);
+          }, 5000);
+          // make the change dynamically
+          const newPersons = persons.filter((person) => person.id !== id);
+          setPersons(newPersons);
+          setPersonsFilter(newPersons);
+        });
     }
   };
 
