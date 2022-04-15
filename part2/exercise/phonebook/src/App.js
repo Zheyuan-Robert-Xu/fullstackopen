@@ -33,8 +33,27 @@ const App = () => {
     setNewName("");
     setNewNumber("");
     const alreadyExists = persons.some((person) => person.name === newName);
+    const existingPerson = persons.find((person) => person.name === newName);
+
     if (alreadyExists) {
-      alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const changedPerson = { ...existingPerson, number: newNumber };
+
+        PhoneService.update(existingPerson.id, changedPerson).then(
+          (returnedPerson) => {
+            /// only in this it will update automatically
+            const newPersons = persons.map((person) =>
+              person.id !== existingPerson.id ? person : returnedPerson
+            );
+            setPersons(newPersons);
+            setPersonsFilter(newPersons);
+          }
+        );
+      }
       return;
     }
     PhoneService.create({ name: newName, number: newNumber }).then(
