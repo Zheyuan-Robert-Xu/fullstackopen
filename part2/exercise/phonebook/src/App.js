@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import noteService from "./services/notes";
 
 import axios from "axios";
 
@@ -13,8 +14,11 @@ const App = () => {
   const [newFilter, setNewFilter] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+    // axios.get("http://localhost:3001/persons").then((response) => {
+    //   setPersons(response.data);
+    // });
+    noteService.getAll().then((initialNotes) => {
+      setPersons(initialNotes);
     });
   }, []);
 
@@ -32,8 +36,14 @@ const App = () => {
       id: persons.length + 1,
     };
 
-    axios.post("http://localhost:3001/persons", newPerson).then((response) => {
-      setPersons(persons.concat(response.data));
+    // axios.post("http://localhost:3001/persons", newPerson).then((response) => {
+    //   setPersons(persons.concat(response.data));
+    //   setNewName("");
+    //   setNewNumber("");
+    // });
+
+    noteService.create(newPerson).then((returnedNote) => {
+      setPersons(persons.concat(returnedNote));
       setNewName("");
       setNewNumber("");
     });
