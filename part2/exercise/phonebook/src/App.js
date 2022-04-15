@@ -53,6 +53,12 @@ const App = () => {
             );
             setPersons(newPersons);
             setPersonsFilter(newPersons);
+            setModifyMessage(
+              `Modified '${returnedPerson.name}''s number to '${returnedPerson.number}'`
+            );
+            setTimeout(() => {
+              setModifyMessage(null);
+            }, 5000);
           }
         );
       }
