@@ -38,7 +38,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 app.get("/api/notes/:id", (request, response) => {
-  const id = Number(request.params.id); // id should be interge not string
+  const id = Number(request.params.id); // id should be interget not string
   const note = notes.find((note) => {
     console.log(note.id, typeof note.id, id, typeof id, note.id === id);
     return note.id === id;
