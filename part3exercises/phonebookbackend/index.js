@@ -41,3 +41,14 @@ const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+app.get("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id); // id should be interget not string
+  const person = persons.find((p) => {
+    return p.id === id;
+  });
+  if (person) {
+    response.json(person);
+  } else {
+    response.status(404).end();
+  }
+});
