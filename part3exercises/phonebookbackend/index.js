@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
+var morgan = require("morgan");
 
 app.use(express.json());
+// app.use(morgan("tiny")); // is somewhat duplicated with the following code
 
 let persons = [
   {
@@ -38,6 +40,27 @@ app.get("/info", (request, response) => {
     `<div><p>Phonebook has info for ${numPerson} people</p><p>${date}</p></div>`
   );
 });
+
+app.use(
+  morgan((tokens, req, res) => {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, "content-length"),
+      "-",
+      tokens["response-time"](req, res),
+      "ms",
+      JSON.stringify(req.body), //{"name":"Greate Robert","number":"058-2749539"}
+    ].join(" ");
+  })
+);
+
+// const unknownEndpoint = (req, res) => {
+//   res.status(404).send({ error: "unknown endpoint" });
+// };
+
+// app.use(unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT, () => {
@@ -93,3 +116,16 @@ app.post("/api/persons", (request, response) => {
   // it returns a promise which resolves with the result of parsing the body text as JSON
   // the result is not JSON but is instead the result of taking JSON as input and parsing it to produce a JavaScript object
 });
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
+  }
+  next(error);
+};
+
+app.use(errorHandler);
